@@ -1,0 +1,78 @@
+<html>
+<head>
+  <title>Rock Paper Scissors</title>
+  <link rel="stylesheet" href="rock paper scissors.css">
+</head>
+<body>
+  <header>
+    <h1>Rock Paper Scissors</h1>
+  </header>
+  <div class="game-container">
+    <div class="button-group">
+      <button onclick="play('Rock')" title="Rock">✊<br>Rock</button>
+      <button onclick="play('Paper')" title="Paper">✋Paper</button>
+      <button onclick="play('Scissors')" title="Scissors">✌️Scissors</button>
+    </div>
+    <div id="result"></div>
+    <div id="score"></div>
+    <button class="final-btn" onclick="finalscore()">Finialize result</button>
+    <button class="reset-btn" onclick="resetScore()">Reset Score</button>
+  </div>
+  <script>
+    const res = document.getElementById('result');
+    const scoreDisplay = document.getElementById('score');
+    let score = { win: 0, lose: 0, tied: 0 };
+
+    function getComputerChoice() {
+      const rand = Math.random();
+      if (rand < 1/3) return 'Rock';
+      if (rand < 2/3) return 'Paper';
+      return 'Scissors';
+    }
+    function finalscore(){
+      if(score.win>score.lose){
+        res.innerHTML=`Congrats! you won`;
+      }
+      else if(score.win<score.lose){
+        res.innerHTML=`Uh Oh you lose!`;
+      }
+      else{
+        res.innerHTML=`Match tied`;
+      } 
+       }
+    function play(userChoice) {
+      const computerChoice = getComputerChoice();
+      let outcome = '';
+      let emoji = { Rock: "✊", Paper: "✋", Scissors: "✌️" };
+
+      if (userChoice === computerChoice) {
+        outcome = `<strong>Tied!</strong> You both chose <span>${emoji[userChoice]}</span> <b>${userChoice}</b>.`;
+        score.tied++;
+      } else if (
+        (userChoice === 'Rock' && computerChoice === 'Scissors') ||
+        (userChoice === 'Paper' && computerChoice === 'Rock') ||
+        (userChoice === 'Scissors' && computerChoice === 'Paper')
+      ) {
+        outcome = `<strong>You Won!</strong> You chose <span>${emoji[userChoice]}</span> <b>${userChoice}</b>, computer chose <span>${emoji[computerChoice]}</span> <b>${computerChoice}</b>.`;
+        score.win++;
+      } else {
+        outcome = `<strong>You Lost!</strong> You chose <span>${emoji[userChoice]}</span> <b>${userChoice}</b>, computer chose <span>${emoji[computerChoice]}</span> <b>${computerChoice}</b>.`;
+        score.lose++;
+      }
+      res.innerHTML = outcome;
+      showScore();
+    }
+
+    function showScore() {
+      scoreDisplay.innerHTML = `Wins: <b>${score.win}</b> &nbsp;|&nbsp; Losses: <b>${score.lose}</b> &nbsp;|&nbsp; Ties: <b>${score.tied}</b>`;
+    }
+
+    function resetScore() {
+      score = { win: 0, lose: 0, tied: 0 };
+      res.innerHTML = '';
+      showScore();
+    }
+    showScore();
+  </script>
+</body>
+</html>
